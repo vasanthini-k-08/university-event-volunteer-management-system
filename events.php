@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head> <link rel="stylesheet" href="style.css?v=3">
 <title>Events - Event Volunteer</title>
 <style>
 body { font-family: Arial, Helvetica, sans-serif; margin: 0; background: #f5f5f5; }
