@@ -23,5 +23,13 @@ $counts = [
 <?php $stmt=$pdo->prepare("SELECT va.status,e.title,e.event_date FROM volunteer_applications va JOIN events e ON e.id=va.event_id WHERE va.student_id=? ORDER BY va.created_at DESC");$stmt->execute([$user['id']]);$apps=$stmt->fetchAll(); ?>
 <div class="section-head"><div><span class="eyebrow">MY VOLUNTEERING</span><h2>My applications</h2></div><a class="btn btn-primary" href="events.php">Find events</a></div>
 <div class="table-wrap"><table><thead><tr><th>Event</th><th>Date</th><th>Application status</th></tr></thead><tbody><?php foreach($apps as $a): ?><tr><td><?= e($a['title']) ?></td><td><?= e(date('d M Y',strtotime($a['event_date']))) ?></td><td><span class="status <?= e($a['status']) ?>"><?= e(ucfirst($a['status'])) ?></span></td></tr><?php endforeach; ?><?php if(!$apps): ?><tr><td colspan="3">You have not applied for any events yet.</td></tr><?php endif; ?></tbody></table></div>
+
+<?php
+$taskStmt = $pdo->prepare("SELECT t.task_title, t.description, t.status, e.title AS event_title, e.event_date FROM tasks t JOIN events e ON e.id=t.event_id WHERE t.student_id=? ORDER BY t.created_at DESC");
+$taskStmt->execute([$user['id']]);
+$tasks = $taskStmt->fetchAll();
+?>
+<div class="section-head" style="margin-top:40px;"><div><span class="eyebrow">MY TASKS</span><h2>My tasks</h2></div></div>
+<div class="table-wrap"><table><thead><tr><th>Task</th><th>Event</th><th>Date</th><th>Description</th><th>Status</th></tr></thead><tbody><?php foreach($tasks as $t): ?><tr><td><?= e($t['task_title']) ?></td><td><?= e($t['event_title']) ?></td><td><?= e(date('d M Y',strtotime($t['event_date']))) ?></td><td><?= e($t['description']) ?></td><td><span class="status <?= e($t['status']) ?>"><?= e(ucfirst($t['status'])) ?></span></td></tr><?php endforeach; ?><?php if(!$tasks): ?><tr><td colspan="5">No tasks assigned yet.</td></tr><?php endif; ?></tbody></table></div>
 <?php endif; ?>
 <?php require __DIR__ . '/includes/footer.php'; ?>
